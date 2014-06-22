@@ -31,7 +31,7 @@ in the constructor and it will be loaded just by including the file.
 
 There is a handful fonts but more fonts can be added from <a href="https://www.google.com/fonts">Google Fonts</a>.
 
-You just need to add an object containing the font name (as it's used CSS) and the font url. Example:
+You just need to add an object containing the font name (as it's used in CSS) and the font url. Example:
 
       {name:'Doris',url:'http://fonts.googleapis.com/css?family=Dosis:400,200,300,500,600,700,800'},
       {name:'Oswald',url:'http://fonts.googleapis.com/css?family=Oswald:400,300,700'}
