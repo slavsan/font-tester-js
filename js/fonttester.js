@@ -12,6 +12,7 @@
       {name:'Arial'},
       {name:'Verdana'}
     ];
+    //this.init();
     return this;
   }
   FontTester.prototype = {
