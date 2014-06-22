@@ -29,7 +29,7 @@ An alternative is to uncomment the line
     
 in the constructor and it will be loaded just by including the file.
 
-There is a handful fonts but more fonts can be added from <a href="https://www.google.com/fonts">Google Fonts</a>.
+There is a handful of fonts but more fonts can be added from <a href="https://www.google.com/fonts">Google Fonts</a>.
 
 You just need to add an object containing the font name (as it's used in CSS) and the font url. Example:
 
