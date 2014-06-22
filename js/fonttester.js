@@ -3,10 +3,14 @@
   function FontTester() {
     this.doc = global.document;
     this.inspectorTurnedOn = true;
-    this.sampleText = 'The red fox jumped over the blah ..';
+    this.sampleText = 'The quick brown fox jumps over the lazy dog';
     this.fonts = [
       {name:'Open Sans',url:'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,600,300,700,800'},
-      {name:'Oswald',url:'http://fonts.googleapis.com/css?family=Oswald:400,300,700'}
+      {name:'Oswald',url:'http://fonts.googleapis.com/css?family=Oswald:400,300,700'},
+      {name:'Doris',url:'http://fonts.googleapis.com/css?family=Dosis:400,200,300,500,600,700,800'},
+      {name:'Shadows Into Light',url:'http://fonts.googleapis.com/css?family=Shadows+Into+Light'},
+      {name:'Arial'},
+      {name:'Verdana'}
     ];
     return this;
   }
@@ -22,7 +26,7 @@
       this.inspectorElement.id = 'font-tester-inspector';
       this.hintElement.textContent = 'Press [e] to edit font';
       this.fontChooserElement.id = 'font-tester-chooser';
-      this.fontChooserElement.innerHTML = '<div>Font: <select></select></div>';
+      this.fontChooserElement.innerHTML = '<div>Font:</div><div><select></select></div><div><button class="close">close</button></div>';
       // cache styles
       var inspectorStyle = this.inspectorElement.style;
       var hintStyle = this.hintElement.style;
@@ -48,6 +52,7 @@
       fontChooserStyle.padding = '5px';
       fontChooserStyle.background = '#fff';
       fontChooserStyle.fontSize = '24px !important';
+      fontChooserStyle.boxShadow = '0 0 3px #999';
       this.fontChooserElement.querySelector('select').style.fontSize = '19px';
       // append
       this.inspectorElement.appendChild(this.hintElement);
@@ -56,11 +61,14 @@
     },
 
     loadFont: function( font ) {
-      var link = this.doc.createElement('link');
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = font.url;
-      this.doc.querySelector('head').appendChild(link);
+      console.log('Load font: "%s": %o', font.name, font);
+      if (font.url) {
+        var link = this.doc.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = font.url;
+        this.doc.querySelector('head').appendChild(link);
+      }
       var option = this.doc.createElement('option');
       option.value = font.name;
       option.textContent = font.name + ': ' + this.sampleText;
@@ -93,7 +101,7 @@
     },
 
     hideFontChooser: function() {
-
+      this.fontChooserElement.style.display = 'none';
     },
 
     handleMouseOver: function( e ) {
@@ -108,22 +116,24 @@
 
     handleKeyPress: function( e ) {
       switch (e.charCode) {
-        case 101: this.showFontChooser(); break;
+        case 101: this.showFontChooser(); break; // charCode "e"
       }
     },
 
     changeFont: function( e ) {
-      console.log('CHANGE FONT: ', e.target.value);
-      this.currentTarget.style.fontFamily = e.target.value;
+      console.log('Change font to: %s', e.target.options[e.target.selectedIndex].value);
+      this.currentTarget.style.fontFamily = e.target.options[e.target.selectedIndex].value;
     },
 
     bind: function() {
+      var self = this;
       this.doc.onmouseover = this.handleMouseOver.bind(this);
       this.doc.onkeypress = this.handleKeyPress.bind(this);
-      var optionNodes = this.fontChooserElement.querySelectorAll('option');
-      for (var i = 0; i < optionNodes.length; i += 1) {
-        optionNodes[i].onclick = this.changeFont.bind(this);
-      }
+      this.fontChooserElement.querySelector('select').onchange = this.changeFont.bind(this);
+      this.fontChooserElement.querySelector('.close').onclick = function() {
+        self.hideFontChooser();
+        self.showInspector();
+      };
     },
 
     init: function() {
